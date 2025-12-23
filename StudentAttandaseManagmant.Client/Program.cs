@@ -9,7 +9,7 @@ namespace StudentAttandaseManagmant.Client
        static AttendanceService attendanceService = new AttendanceService();
         static void Main(string[] args)
         {
-            while (true)   // 🔥 M E N Y U   C H E K S I Z
+            while (true) 
             {
                 Console.WriteLine("\n=== Student Attendance Menu ===");
                 Console.WriteLine("1. Student qo'shish");
