@@ -1,0 +1,145 @@
+﻿using StudentAttendanceManagement.Application.Servises;
+using StudentAttendanceManagement.Domain.Models;
+
+namespace StudentAttandaseManagmant.Client
+{
+    public class Program
+    {
+        static StudentServise studentServise = new StudentServise();
+       static AttendanceService attendanceService = new AttendanceService();
+        static void Main(string[] args)
+        {
+            while (true)   // 🔥 M E N Y U   C H E K S I Z
+            {
+                Console.WriteLine("\n=== Student Attendance Menu ===");
+                Console.WriteLine("1. Student qo'shish");
+                Console.WriteLine("2. Studentlarni ko'rish");
+                Console.WriteLine("3. Attendance qo'shish");
+                Console.WriteLine("4. Attendance ro'yxatini ko'rish");
+                Console.WriteLine("0. Chiqish");
+
+                Console.Write("\nTanlang: ");
+                string choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        AddStudent();
+                        break;
+
+                    case "2":
+                        GetAllStudents();
+                        break;
+
+                    case "3":
+                        AddAttendance();
+                        break;
+
+                    case "4":
+                        GetAllAttendance();
+                        break;
+
+                    case "0":
+                        Console.WriteLine("Dastur yakunlandi.");
+                        return;
+
+                    default:
+                        Console.WriteLine("Noto'g'ri tanlov! Qayta tanlang.");
+                        break;
+                }
+            }
+
+
+
+            static void AddStudent()
+            {
+                Console.Write("\nStudent Id kiriting: ");
+                int id = int.Parse(Console.ReadLine());
+
+                Console.Write("To‘liq ism kiriting: ");
+                string fullName = Console.ReadLine();
+
+                Student student = new Student
+                {
+                    id = id,
+                    fullName = fullName
+                };
+
+                studentServise.Add(student);
+
+                Console.WriteLine("Student muvaffaqiyatli qo‘shildi!");
+            }
+
+
+
+            static void GetAllStudents()
+            {
+                var students = studentServise.GetAll();
+
+                Console.WriteLine("\n=== Studentlar ro'yxati ===");
+
+                if (students.Count == 0)
+                {
+                    Console.WriteLine("Hali studentlar yo‘q!");
+                    return;
+                }
+
+                foreach (var s in students)
+                {
+                    Console.WriteLine($"ID: {s.id} | FullName: {s.fullName}");
+                }
+            }
+
+
+
+            static void AddAttendance()
+            {
+                Console.Write("\nAttendance Id kiriting: ");
+                int id = int.Parse(Console.ReadLine());
+
+                Console.Write("Student Id kiriting: ");
+                int studentId = int.Parse(Console.ReadLine());
+
+                Console.Write("IsPresent (true/false): ");
+                bool present = bool.Parse(Console.ReadLine());
+
+                Console.Write("Sana (YYYY-MM-DD): ");
+                DateTime date = DateTime.Parse(Console.ReadLine());
+
+                Attandance attendance = new Attandance
+                {
+                    id = id,
+                    studentId = studentId,
+                    isPresent = present,
+                    date = date
+                };
+
+                attendanceService.Add(attendance);
+
+                Console.WriteLine("Attendance muvaffaqiyatli qo‘shildi!");
+            }
+
+
+
+            static void GetAllAttendance()
+            {
+                var list = attendanceService.GetAll();
+
+                Console.WriteLine("\n=== Attendance List ===");
+
+                if (list.Count == 0)
+                {
+                    Console.WriteLine("Hali attendance kiritilmagan!");
+                    return;
+                }
+
+                foreach (var a in list)
+                {
+                    Console.WriteLine(
+                        $"ID:{a.id} | StudentId:{a.studentId} | Present:{a.isPresent} | Date:{a.date.ToShortDateString()}"
+                    );
+                }
+            }
+        }
+    }
+}
